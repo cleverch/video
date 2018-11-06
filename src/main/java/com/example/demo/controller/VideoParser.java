@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yxx.code.result.RetResult;
+import com.yxx.code.result.RetRetResponse;
 import com.yxx.utli.HttpConnect;
 import com.yxx.utli.URLUtil;
 
@@ -17,7 +19,7 @@ import net.sf.json.JSONObject;
 public class VideoParser {
 	@RequestMapping("/videoPaser")
 	@ResponseBody
-	public  Map<String,Object> Parser(String txurl) {
+	public  RetResult<String> Parser(String txurl) {
 		String url="";
 		ArrayList<String> arrys=send(txurl);
 		for(int i=0;i<arrys.size();i++) {
@@ -28,10 +30,7 @@ public class VideoParser {
 			senduserlike(turl);
 			System.out.println(url);
 		}
-		HashMap<String, Object> data=new HashMap<>();
-		data.put("code", "1");
-		data.put("url", url);
-		return data;
+		return RetRetResponse.makeOKRsp(url);
 	}
 	public  ArrayList<String> send(String id) {
 		String url="http://y.mt2t.com/lines/getdata";

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class VideoParser {
 		for(int i=0;i<arry.size();i++) {
 			JSONObject o=arry.getJSONObject(i);
 			arrys.add(o.getString("Url"));
-			System.out.println(o.getString("Scheme"));
+			System.out.println(o.getString("Url"));
 			break;
 		}
 		
@@ -63,6 +64,42 @@ public class VideoParser {
 		String url="http://y.mt2t.com/lines/userlike";
 		String s=HttpConnect.sendPost(url,"url="+id);
 		System.out.println(s);
+		
+	}
+	@RequestMapping("/getdata")
+	@ResponseBody
+	public  RetResult<String> getdata(String txurl) {
+		String url1="http://y.mt2t.com/lines/getdata";
+		String s=HttpConnect.sendPost(url1,"url="+txurl+"&key=a0b923820dcc509a");
+		JSONArray arry=JSONArray.fromObject(s);
+		ArrayList<String> arrys=new ArrayList<>();
+		String url="";
+		for(int i=0;i<arry.size();i++) {
+			JSONObject o=arry.getJSONObject(i);
+			arrys.add(o.getString("Url"));
+			url=o.getString("Url");
+			System.out.println(url+" --"+arry.size());
+			break;
+		}
+		if(!url.equals("")) {
+			return RetRetResponse.makeOKRsp(url);
+		}
+		return RetRetResponse.makeErrRsp("解析失败");
+	}
+	@RequestMapping("/api")
+	@ResponseBody
+	public  RetResult<String> api(String url,String up) {
+		url=URLEncoder.encode(url);
+		System.out.println("参数："+url);
+		String url1="http://y3.mt2t.com:91/ifr/api";
+		String s=HttpConnect.sendPost(url1,"url="+url+"&type=&from=mt2t.com&device=&up="+up);
+		JSONObject o=JSONObject.fromObject(s);
+		url=o.getString("url");
+		System.out.println("xx"+url);
+		if(url==null) {
+			return RetRetResponse.makeErrRsp("解析失败");
+		}
+		return RetRetResponse.makeOKRsp(url);
 		
 	}
 	

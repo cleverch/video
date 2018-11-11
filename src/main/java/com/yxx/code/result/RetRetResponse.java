@@ -9,7 +9,7 @@ public class RetRetResponse {
 	      return new RetResult<T>().setCode(RetCode.SUCCESS).setMsg(SUCCESS).setData(data);
 	   }
 	   public static <T> RetResult<T> makeErrRsp(String message) {
-	      return new RetResult<T>().setCode(RetCode.FAIL).setMsg(SUCCESS);
+	      return new RetResult<T>().setCode(RetCode.FAIL).setMsg(message);
 	   }
 	   public static <T> RetResult<T> makeRsp(int code, String msg) {
 	      return new RetResult<T>().setCode(code).setMsg(msg);
